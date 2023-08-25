@@ -98,14 +98,21 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value = "/member/mypage.kh", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/mypage.kh", method = {RequestMethod.GET, RequestMethod.POST})
 	public String showMyPage(
 			//쿼리스트링 받기 위해서 @RequestParam 사용
-			@RequestParam("memberId") String memberId
+			//@RequestParam("memberId") String memberId
 			//Model에 키와 값으로 데이터를 넣어주면 jsp에서 꺼내서 사용가능
+			HttpSession session
 			, Model model) {
 		try {
-			Member member = service.getMemberById(memberId);
+			String memberId = (String)session.getAttribute("memberId");
+			Member member = null;
+			
+			if(memberId != "" && memberId != null) {
+				member = service.getMemberById(memberId);
+			}
+			
 			if(member != null) {
 				model.addAttribute("member", member);
 				return "member/mypage";

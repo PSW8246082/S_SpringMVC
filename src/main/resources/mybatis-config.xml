@@ -3,13 +3,20 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
   <configuration>
+<!--   <settings name="jdbcType"> -->
+  
+<!--   </settings> -->
   <typeAliases>
   <typeAlias type="com.s.spring.member.domain.Member" alias="Member"/>
   <typeAlias type="com.s.spring.notice.domain.Notice" alias="Notice"/>
+  <typeAlias type="com.s.spring.board.domain.Board" alias="Board"/>
+  <typeAlias type="com.s.spring.board.domain.Reply" alias="Reply"/>
   </typeAliases>
 <!--   member-mapper에 내용 없으면 주석처리하기 -->
   <mappers>
   <mapper resource="mappers/member-mapper.xml"/>
   <mapper resource="mappers/notice-mapper.xml"/>
+  <mapper resource="mappers/board-mapper.xml"/>
+  <mapper resource="mappers/reply-mapper.xml"/>
   </mappers>
   </configuration>

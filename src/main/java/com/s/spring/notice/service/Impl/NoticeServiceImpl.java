@@ -86,4 +86,18 @@ public class NoticeServiceImpl implements NoticeService{
 		return result;
 	}
 
+
+	@Override
+	public Notice selectNoticeNo(Integer noticeNo) {
+		Notice noticeOne = nStore.selectNoticeByNo(session, noticeNo);
+		return noticeOne;
+	}
+
+
+	@Override
+	public int updateNotice(Notice notice) {
+		int result = nStore.updateNotice(session,notice);
+		return result;
+	}
+
 }

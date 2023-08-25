@@ -72,6 +72,21 @@ public interface NoticeService {
 	 */
 	int getListCount(Map<String, String> paramMap);
 
+	/**
+	 * 공지사항 번호로 조회 Service
+	 * @return
+	 */
+	Notice selectNoticeNo(Integer noticeNo);
+
+	/**
+	 * 공지사항 수정 Service
+	 * @param notice
+	 * @return
+	 */
+	int updateNotice(Notice notice);
+
+
+
 	
 
 	

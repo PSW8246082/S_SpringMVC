@@ -28,7 +28,11 @@
 		<c:forEach var="notice" items="${nList }" varStatus="i">
 			<tr>
 				<td>${i.count }</td>
-				<td>${notice.noticeSubject }</td>
+				<c:url var="detailUrl" value="/notice/detail.kh">
+				<c:param name="noticeNo" value="${notice.noticeNo }"></c:param>
+				</c:url>
+				<td><a href="${detailUrl }">${notice.noticeSubject }</a></td>
+<%-- 				<td><a href="/notice/detail.kh?noticeNo=${noticeNo }">${notice.noticeSubject }</a></td> --%>
 				<td>${notice.noticeWriter }</td>
 				<td>
 				<fmt:formatDate pattern="YYYY-MM-dd" value="${notice.nCreateDate}"/>
@@ -72,10 +76,16 @@
 					</form>
 				</td>
 				<td> 
-					<button>글쓰기</button>
+					<button type="button" onclick="showRegisterForm();">글쓰기</button>
 				</td>
 			</tr>
 		</tfoot>
 	</table>
+	
+	<script>
+		const showRegisterForm = () => {
+			location.href="/notice/insert.kh";
+		}
+	</script>
 </body>
 </html>
