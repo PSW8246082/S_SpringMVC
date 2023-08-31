@@ -29,6 +29,18 @@ public class ReplyStoreLogic implements ReplyStore{
 		return rList;
 	}
 
+	//삭제 방법1)
+//	@Override
+//	public int deleteReply(SqlSession session, Reply reply) {
+//	int result = session.delete("ReplyMapper.deleteReply", reply);
+//	return result;
+//	}
+	
+	//삭제 방법2)
+	public int deleteReply(SqlSession session, Reply reply) {
+	int result = session.update("ReplyMapper.deleteReply", reply);
+	return result;
+	}
 	
 
 }

@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="../resources/css/board/board.css"> 
 </head>
 <body>
+<h1><a href="/index.jsp">HOME</a></h1>
 	<h1>게시글 목록</h1>
 	<table>
 		<colgroup>
@@ -110,7 +111,7 @@
 	
 	<script>
 		const showRegisterForm = () => {
-			location.href="/board/insert.kh";
+			location.href="/board/write.kh";
 		}
 	</script>
 </body>

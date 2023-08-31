@@ -30,17 +30,34 @@
 				<img alt="첨부파일" src="../resources/buploadFiles/${board.boardFilename }">
 				<!-- 다운로드 받을 때 -->
 				<a href="${board.boardFilepath }" download>${board.boardFilename }</a>  
+				<c:if test="${not empty board.boardFilename }">
+					<a href="#">삭제</a>
+				</c:if>
 			</li>
 		</ul>
 		
+		<c:url  var="boardDelUrl" value = "/board/delete.kh">
+			<c:param name="boardNo" value="${board.boardNo}"></c:param>
+			<c:param name="boardWriter" value="${board.boardWriter}"></c:param>
+		</c:url>
+		
+		<c:url  var="modifyUrl" value = "/board/modify.kh">
+			<c:param name="boardNo" value="${board.boardNo}"></c:param>
+			<c:param name="boardWriter" value="${board.boardWriter}"></c:param>
+		</c:url>
+		
 		<div>
-			<button type="button" onclick="showModifyPage()">수정하기</button>
-			<button>삭제하기</button>
-			<button type="button" onclick="showNoticeList()">목록으로</button>
+			<c:if test="${board.boardWriter eq memberId }">
+				<button type="button" onclick="showModifyPage('${modifyUrl }')">수정하기</button>
+				<button type="button" onclick="deleteBoard('${boardDelUrl }')">삭제하기</button>
+			</c:if>
+				<button type="button" onclick="showBoardList()">목록으로</button>
+				<button type="button" onclick="javascript:history.go(-1);">뒤로가기</button>
 		</div>
 <br><br>
 <hr>
 <br><br>
+
 
 	<!--댓글등록 -->
 	<form action="/reply/add.kh" method="post">
@@ -64,7 +81,14 @@
 				<td>${reply.rCreateDate }</td>
 				<td>
 					<a href="javascript:void(0);" onclick="showModifyForm(this, '${reply.replyContent }');">수정하기</a>
-					<a href="#">삭제하기</a>
+					<c:url var="delUrl" value="/reply/delete.kh">
+					<c:param name="replyNo" value="${reply.replyNo}"></c:param>
+					<!-- 내것(작성자) 것만 지우도록 하기위해서 추가함 -->
+					<c:param name="replyWriter" value="${reply.replyWriter}"></c:param>
+					<!-- 성공하면 detail로 가기 위한 boardNo 세팅 -->
+					<c:param name="refBoardNo" value="${reply.refBoardNo}"></c:param>
+					</c:url>
+					<a href="javascript:void(0)" onclick="deleteReply('${delUrl }');">삭제하기</a>
 				 </td>
 			</tr>
 				<!-- 방법1 -->
@@ -96,18 +120,42 @@
 		
 		
 		<script>
-			function showModifyPage() {
-// 				alert("test");
-				const noticeNo = "${board.boardNo }";
-				location.href="/board/modify.kh?boardNo=" + boardNo;
-			}
+		
+// 	################################# 게시글 ############################################ 		
+		
+		//게시글 수정
+		function showModifyPage(boardUrl) {
+// 			alert("test");
+			location.href = boardUrl;
+		}
+		
+		//게시글 삭제
+		const deleteBoard = (boardUrl) => {
+			//alert("test");
+			location.href = boardUrl;
+		}
+		
+		
+		//목록으로 이동하기
+		function showBoardList() {
+// 			alert("test");
+			location.href="/board/list.kh";
+		}
+		
+		
+		
+		
+// 		################################# 댓글 ############################################ 
+		//댓글삭제
+			function deleteReply(url){
+				//DELETE FROM REPLY_TBL WHERE REPLY_NO = 샵{replyNo}, AND R_STATUS = 'Y'
+				//UPDEATE REPLY_TBL SET R_STTUS = 'N' WHERE REPLY_NO = 샵{replyNo }
+				//alert(url);
+				location.href=url;
+			}	
 			
-			function showNoticeList() {
-// 				alert("test");
-				location.href="/board/list.kh";
-			}
-			
-			function replyModify(obj, replyNo, replyContent) {
+	
+			function replyModify(obj, replyNo, refBoardNo) {
 // 				alert("test");
 				//DOM프로그래밍을 이용하는 방법
 				const form = document.createElement("form");
@@ -128,7 +176,11 @@
 				input3.type= "text";
 				//여기를 this를 이용하여 수정해주세요.
 // 				input3.value= document.querySelector("#replyContent").value;
-				input3.value = obj;
+				//this를 이용하여 내가 원하는 노드 찾기
+				//방법1
+				input3.value = obj.parentElement.previousElementSibling.childNodes[0].value;
+				//방법2
+				//input3.value = obj.parentElement.previousElementSibling.children[0].value;
 				input3.name= "replyContent";
 				
 				form.appendChild(input);
@@ -175,10 +227,6 @@
 // 				const prevTrTag = obj.parentElement.parentElement;
 // // 				if(prevTrTag.nextElementSibing == null || !prevTrTag.nextElementSibling.querySelector("input")) 오류
 // 				prevTrTag.parentNode.insertBefore(trTag, prevTrTag.nextSibling);
-			
-			
-			
-			
 			
 			}
 
